@@ -1,0 +1,25 @@
+{
+    "name": "atimofeev/test-fixparts",
+    "description": "Practical Test - PHP",
+    "type": "project",
+    "require-dev": {
+        "phpunit/phpunit": "^10.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "App\\Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Александр Тимофеев",
+            "email": "tim31al@gmail.com"
+        }
+    ],
+    "require": {}
+}
