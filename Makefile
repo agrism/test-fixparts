@@ -13,4 +13,4 @@ stop:
 	docker-compose down -v
 
 create_dir:
-	[ ! -d $VAR_DIR ] && mkdir $VAR_DIR
+	[ ! -d $(VAR_DIR) ] && mkdir $(VAR_DIR)
