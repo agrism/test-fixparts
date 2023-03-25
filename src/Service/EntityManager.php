@@ -26,11 +26,11 @@ class EntityManager extends AbstractSplSubject implements SplObserver
     /**
      * @throws \Exception
      */
-    public function __construct($storePath)
+    public function __construct(DataStore $dataStore)
     {
         parent::__construct();
 
-        $this->_dataStore = new DataStore($storePath);
+        $this->_dataStore = $dataStore;
 
         $this->_nextId = 1;
 

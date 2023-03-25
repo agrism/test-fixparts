@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Command\AppCommand;
+use App\Service\DataStore;
 use App\Service\EntityManager;
 use App\Service\LoggerService;
 use App\Service\QuantityObserver;
@@ -14,13 +15,21 @@ class Application
     const LOG_FILE = 'entity_update.log';
 
     private \Symfony\Component\Console\Application $application;
+    private array $container;
 
     /**
      * @throws \Exception
      */
     public function __construct()
     {
-        $this->init();
+        $container = $this->mockInitContainer();
+
+        /** @var AppCommand $command */
+        $command = $container[AppCommand::class];
+
+        $this->application = new \Symfony\Component\Console\Application();
+        $this->application->add($command);
+        $this->application->setDefaultCommand($command->getName(), true);
     }
 
     /**
@@ -34,10 +43,12 @@ class Application
     /**
      * @throws \Exception
      */
-    private function init(): void
+    private function mockInitContainer(): array
     {
         $storePath = $this->getFilePath(self::STORE_FILE);
-        $entityManager = new EntityManager($storePath);
+        $dataStore = new DataStore($storePath);
+
+        $entityManager = new EntityManager($dataStore);
 
         $logPath = $this->getFilePath(self::LOG_FILE);
         $logger = new LoggerService($logPath);
@@ -48,9 +59,12 @@ class Application
 
         $command = new AppCommand($entityManager);
 
-        $this->application = new \Symfony\Component\Console\Application();
-        $this->application->add($command);
-        $this->application->setDefaultCommand($command->getName(), true);
+        return [
+            EntityManager::class => $entityManager,
+            LoggerService::class => $logger,
+            QuantityObserver::class => $quantityObserver,
+            AppCommand::class => $command,
+        ];
     }
 
     private function getFilePath(string $filename): string
