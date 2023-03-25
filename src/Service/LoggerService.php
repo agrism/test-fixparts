@@ -6,7 +6,16 @@ use SplSubject;
 
 class LoggerService implements \SplObserver
 {
-    const LOG_PATH = 'entity_update.log';
+    private string $filename;
+
+    /**
+     * @param string $filename
+     */
+    public function __construct(string $filename)
+    {
+        $this->filename = $filename;
+    }
+
 
     /**
      * @throws \Exception
@@ -24,19 +33,12 @@ class LoggerService implements \SplObserver
      */
     private function write(string $message): void
     {
-        $filename = $this->getFilename();
-
-        $fd = fopen($filename, 'a');
+        $fd = fopen($this->filename, 'a');
         if (false === $fd) {
             throw new \Exception('File not open.');
         }
 
         fwrite($fd, $message);
         fclose($fd);
-    }
-
-    private function getFilename(): string
-    {
-        return dirname(__DIR__, 2) . '/var/' . self::LOG_PATH;
     }
 }

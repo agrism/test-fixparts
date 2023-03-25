@@ -18,21 +18,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class AppCommand extends Command
 {
-    const DATA_STORE_PATH = 'data_store_file.data';
-
     private EntityManager $entityManager;
 
-    public function __construct()
+    public function __construct(EntityManager $entityManager)
     {
-        $storePath = dirname(__DIR__, 2) . '/var/' . self::DATA_STORE_PATH;
-
-        $this->entityManager = new EntityManager($storePath);
-
-        $logger = new LoggerService();
-        $this->entityManager->attach($logger);
-
-        $quantityObserver = new QuantityObserver();
-        $this->entityManager->attach($quantityObserver);
+        $this->entityManager = $entityManager;
 
         parent::__construct();
     }
@@ -95,6 +85,5 @@ class AppCommand extends Command
 
         return $items;
     }
-
 
 }
