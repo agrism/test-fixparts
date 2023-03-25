@@ -21,5 +21,7 @@
             "email": "tim31al@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "symfony/console": "^6.2"
+    }
 }
