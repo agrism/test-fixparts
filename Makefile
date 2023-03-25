@@ -7,5 +7,5 @@ test:
 run:
 	docker-compose exec -u app app php bin/app.php
 
-temp:
-	docker-compose exec -u app app php bin/test.php
+stop:
+	docker-compose down -v
